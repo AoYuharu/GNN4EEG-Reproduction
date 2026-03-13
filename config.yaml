@@ -1,0 +1,176 @@
+# GNN4EEG 复现项目配置
+
+# ==================== 数据配置 ====================
+data:
+  # 数据集选择：deap | seed
+  name: deap
+  
+  # 数据根目录
+  root: ./data
+  
+  # 数据加载线程数
+  num_workers: 4
+  
+  # 随机种子
+  seed: 42
+
+# DEAP 数据集特定配置
+deap:
+  # EEG 通道数
+  num_channels: 32
+  
+  # 样本数 (62 秒 × 128 Hz)
+  num_samples: 8064
+  
+  # 试验数/被试
+  num_trials: 40
+  
+  # 被试数
+  num_subjects: 32
+  
+  # 采样率 (Hz)
+  sample_rate: 128
+  
+  # 带通滤波范围 (Hz)
+  bandpass:
+    low: 4.0
+    high: 45.0
+  
+  # 标签配置
+  labels:
+    # 任务类型：valence | arousal
+    task: valence
+    # 二分类阈值
+    threshold: 5
+    # 类别数
+    num_classes: 2
+
+# SEED 数据集特定配置
+seed:
+  # EEG 通道数
+  num_channels: 62
+  
+  # 特征维度 (5 频段 DE 特征)
+  num_features: 5
+  
+  # 试验数/被试
+  num_trials: 15
+  
+  # 被试数
+  num_subjects: 15
+  
+  # 采样率 (Hz)
+  sample_rate: 200
+  
+  # 频段定义 (Hz)
+  bands:
+    delta: [1, 3]
+    theta: [4, 7]
+    alpha: [8, 13]
+    beta: [14, 30]
+    gamma: [31, 50]
+  
+  # 标签配置
+  labels:
+    num_classes: 3  # positive | neutral | negative
+
+# ==================== 模型配置 ====================
+model:
+  # 模型名称
+  name: gnn4eeg
+  
+  # 输入特征维度
+  in_features: 1
+  
+  # 隐藏层维度
+  hidden_dim: 64
+  
+  # GNN 层数
+  num_layers: 3
+  
+  # Dropout 率
+  dropout: 0.5
+  
+  # 图构建方法：correlation | plv | learnable
+  graph_type: correlation
+  
+  # 激活函数：relu | gelu | elu
+  activation: relu
+
+# ==================== 训练配置 ====================
+training:
+  # 批次大小
+  batch_size: 32
+  
+  # 学习率
+  lr: 0.001
+  
+  # 学习率调度器：cosine | step | reduce_lr_on_plateau
+  lr_scheduler: cosine
+  
+  # 权重衰减
+  weight_decay: 1.0e-5
+  
+  # 训练轮数
+  epochs: 100
+  
+  # 优化器：adam | adamw | sgd
+  optimizer: adam
+  
+  # 早停配置
+  early_stopping:
+    enabled: true
+    patience: 10
+    min_delta: 0.001
+  
+  # 梯度裁剪
+  gradient_clip:
+    enabled: true
+    max_norm: 1.0
+
+# ==================== 评估配置 ====================
+evaluation:
+  # 评估指标
+  metrics:
+    - accuracy
+    - precision
+    - recall
+    - f1
+    - confusion_matrix
+  
+  # 交叉验证折数
+  k_fold: 10
+  
+  # 测试批次大小
+  batch_size: 64
+
+# ==================== 实验配置 ====================
+experiment:
+  # 实验名称
+  name: exp001
+  
+  # 实验描述
+  description: GNN4EEG 基础复现实验
+  
+  # 日志目录
+  log_dir: ./experiments
+  
+  # TensorBoard 日志
+  tensorboard: true
+  
+  # 保存间隔 (epoch)
+  save_interval: 10
+  
+  # 打印间隔 (batch)
+  print_interval: 10
+
+# ==================== 设备配置 ====================
+device:
+  # 计算设备：cuda | cpu
+  type: cuda
+  
+  # GPU 设备 ID (多 GPU 时用逗号分隔)
+  gpu_ids: 0
+  
+  # 混合精度训练
+  amp: true

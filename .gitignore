@@ -1,0 +1,73 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environment
+venv/
+env/
+ENV/
+.venv
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# PyCharm
+.iml
+
+# Data
+*.dat
+*.mat
+*.h5
+*.hdf5
+data/
+!data/__init__.py
+!data/dataset.py
+!data/deap.py
+!data/seed.py
+
+# Experiments
+experiments/
+*.pth
+*.pth.tar
+*.pt
+*.onnx
+
+# Logs
+*.log
+logs/
+
+# TensorBoard
+runs/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Config (keep template, ignore local overrides)
+# config.yaml 保留
+local_config.yaml

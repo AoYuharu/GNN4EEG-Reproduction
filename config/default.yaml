@@ -1,0 +1,63 @@
+# GNN4EEG Default Configuration
+
+data:
+  root: ./data
+  dataset: deap  # deap | seed
+  num_workers: 4
+  
+# Dataset specific settings
+deap:
+  num_channels: 32
+  num_samples: 8064  # 62s * 128Hz
+  num_trials: 40
+  num_subjects: 32
+  sample_rate: 128
+  bandpass:
+    low: 4.0
+    high: 45.0
+  labels:
+    task: valence  # valence | arousal
+    threshold: 5
+    num_classes: 2
+
+seed:
+  num_channels: 62
+  num_features: 5  # 5 frequency bands
+  num_trials: 15
+  num_subjects: 15
+  sample_rate: 200
+  labels:
+    num_classes: 3  # positive | neutral | negative
+
+model:
+  name: gnn4eeg
+  in_features: 1  # raw EEG or DE features
+  hidden_dim: 64
+  num_layers: 3
+  dropout: 0.5
+  graph_type: functional  # functional | anatomical | learnable
+  
+training:
+  batch_size: 32
+  lr: 0.001
+  lr_scheduler: cosine
+  weight_decay: 1e-5
+  epochs: 100
+  early_stopping:
+    enabled: true
+    patience: 10
+  optimizer: adam
+  
+evaluation:
+  metrics:
+    - accuracy
+    - precision
+    - recall
+    - f1
+  k_fold: 10
+  
+misc:
+  seed: 42
+  device: cuda
+  log_interval: 10
+  save_dir: ./experiments
